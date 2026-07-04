@@ -1,0 +1,40 @@
+# .github/workflows/bot-runner.yml
+name: Telegram Diagnostic Bot
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: telegram-bot-runner
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install -r requirements.txt
+
+      - env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_USER_ID: ${{ secrets.TELEGRAM_USER_ID }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+        run: python bot.py
+
+      - run: |
+          git config user.name "bot-runner"
+          git config user.email "bot-runner@users.noreply.github.com"
+          git add offset.json
+          git diff --staged --quiet || git commit -m "chore: update offset [skip ci]"
+          git push
+
