@@ -33,7 +33,7 @@ jobs:
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
         run: python bot.py
 
-      - run: touch offset.json
+      - run: '[ -s offset.json ] || echo "{\"offset\": 0}" > offset.json'
 
       - run: |
           git config user.name "bot-runner"

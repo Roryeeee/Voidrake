@@ -39,8 +39,14 @@ SYNTH_SYS = (
 
 def load_offset():
     if os.path.exists(OFFSET_FILE):
-        with open(OFFSET_FILE) as f:
-            return json.load(f).get("offset", 0)
+        try:
+            with open(OFFSET_FILE) as f:
+                content = f.read().strip()
+                if not content:
+                    return 0
+                return json.loads(content).get("offset", 0)
+        except (json.JSONDecodeError, ValueError):
+            return 0
     return 0
 
 
