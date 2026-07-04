@@ -13,8 +13,8 @@ OFFSET_FILE = "offset.json"
 CHUNK_SIZE = 2000
 MAX_CHUNKS = 5
 
-ROUTER_MODEL = "meta/llama3-8b-instruct"
-SPECIALIST_MODEL = "meta/llama3-70b-instruct"
+ROUTER_MODEL = "meta/llama-3.1-8b-instruct"
+SPECIALIST_MODEL = "meta/llama-3.1-70b-instruct"
 
 ROUTER_SYS = (
     "You are a strict classifier. Read the log excerpt and output EXACTLY ONE WORD: "
